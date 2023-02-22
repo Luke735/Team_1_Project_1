@@ -26,7 +26,7 @@ int main() {
                 current = line.at(count);
                 if (breaker == 0) {
                     name.push_back(current);
-
+                    
                 }
                 if (breaker == 1) {
                     date.push_back(current);
@@ -39,12 +39,62 @@ int main() {
                 }
             }
             showingList.push_back(line);
-        }
+        }     
 
         list<string>::iterator it;
         for (it = showingList.begin(); it != showingList.end(); ++it) {
             fout << *it << endl;
         }
+
+        string option = "e";
+		//the menu is in a while loop until the option selected is q
+		//the menu only reads the first character of the input as the option
+		while (option.at(0) != 'q') {
+            cout << "MENU" << endl;
+			cout << "a - Display movies" << endl;
+			cout << "b - Add movies" << endl;
+			cout << "c - Edit release dates" << endl;
+            cout << "d - Edit movie description" << endl;
+            cout << "e - Start showing movies in the theatre" << endl;
+            cout << "f - Number of movies before a date" << endl;
+            cout << "s - Save" << endl;
+			cout << "q - Quit" << endl;
+            cout << endl;
+			cout << "Choose an option: " << endl;
+            cin >> option;
+
+			//explain option here
+			if (option.at(0) == 'a') {
+				
+			}
+            //explain option here
+			if (option.at(0) == 'b') {
+				
+			}
+			//explain option here
+            if (option.at(0) == 'c') {
+
+            }
+            //explain option here
+            if (option.at(0) == 'd') {
+
+            }
+            //explain option here
+            if (option.at(0) == 'e') {
+
+            }
+            //explain option here
+            if (option.at(0) == 'f') {
+
+            }
+            //explain option here
+            if (option.at(0) == 's') {
+
+            }
+		}//end while loop
+
+
+
 
         fin.close();
         fout.close();
