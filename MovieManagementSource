@@ -2,12 +2,13 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
-#include <vector>
+#include <list>
+#include <iterator>
 
 using namespace std;
 
 int main() {
-    ifstream fin("games_1.txt");
+    ifstream fin("movies.txt");
 
     if (!fin.is_open()) {
         cout << "Could not open file" << endl;
@@ -16,10 +17,33 @@ int main() {
         ofstream fout;
         fout.open("results_1.txt");
 
-        //read imput file for movies
-        
-        while (fin >> somethingVariable >> anotherVariablegoeshereprobably) {
-            
+        string name, date, line;
+        list<string> showingList, comingList;
+        int count = 0, breaker = 0;
+        while (getline(fin, line)) {
+            for (count; count < line.size(); count++) {
+                char current;
+                current = line.at(count);
+                if (breaker == 0) {
+                    name.push_back(current);
+
+                }
+                if (breaker == 1) {
+                    date.push_back(current);
+                }
+                if (current == '"' && count != 0) {
+                    breaker++;
+                }
+                if (breaker == 1 && current != ' ') {
+                    date.push_back(current);
+                }
+            }
+            showingList.push_back(line);
+        }
+
+        list<string>::iterator it;
+        for (it = showingList.begin(); it != showingList.end(); ++it) {
+            fout << *it << endl;
         }
 
         fin.close();
