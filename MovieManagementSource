@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    ifstream fin("games_1.txt");
+
+    if (!fin.is_open()) {
+        cout << "Could not open file" << endl;
+    }
+    else {
+        ofstream fout;
+        fout.open("results_1.txt");
+
+        //read imput file for movies
+        
+        while (fin >> somethingVariable >> anotherVariablegoeshereprobably) {
+            
+        }
+
+        fin.close();
+        fout.close();
+    }
+    return 0;
+}
