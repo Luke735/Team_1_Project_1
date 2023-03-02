@@ -15,6 +15,8 @@ public:
     int get_day();
     int get_month();
     int get_year();
+    
+    friend ostream& operator << (ostream&, const Date&);
 private:
     int day;
     int month;
