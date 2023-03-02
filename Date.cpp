@@ -1,4 +1,6 @@
 #include "Date.h"
+#include <iostream>
+#include <iomanip>
 
 Date::Date() {
     day = 0;
