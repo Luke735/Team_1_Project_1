@@ -4,11 +4,12 @@
 #include <string>
 #include <list>
 #include <iterator>
+#include <vector>
 
 using namespace std;
 
 int main() {
-    ifstream fin("movies.txt");
+    ifstream fin("movie.txt");
 
     if (!fin.is_open()) {
         cout << "Could not open file" << endl;
@@ -16,62 +17,72 @@ int main() {
     else {
         ofstream fout;
         fout.open("results_1.txt");
-
-        string name, date, line;
         list<string> showingList, comingList;
-        int count = 0, breaker = 0;
+        vector<string> names, release_dates, receive_dates, descriptions, statuses;
+        string line;
         while (getline(fin, line)) {
+            string name = "", release_date = "", receive_date = "", description = "", status = "";
+            int count = 0, breaker = 0;
             for (count; count < line.size(); count++) {
                 char current;
                 current = line.at(count);
+                if (current == ',') {
+                    ++breaker;
+                    continue;
+                }
                 if (breaker == 0) {
                     name.push_back(current);
-                    
-                }
-                if (breaker == 1) {
-                    date.push_back(current);
-                }
-                if (current == '"' && count != 0) {
-                    breaker++;
                 }
                 if (breaker == 1 && current != ' ') {
-                    date.push_back(current);
+                    release_date.push_back(current);
+                }
+                if (breaker == 2 && current != ' ') {
+                    description.push_back(current);
+                }
+                if (breaker == 3 && current != ' ') {
+                    receive_date.push_back(current);
+                }
+                if (breaker == 4 && current != ' ') {
+                    status.push_back(current);
                 }
             }
-            showingList.push_back(line);
-        }     
-
+            names.push_back(name);
+            release_dates.push_back(release_date);
+            receive_dates.push_back(receive_date);
+            descriptions.push_back(description);
+            statuses.push_back(status);
+        }
         list<string>::iterator it;
         for (it = showingList.begin(); it != showingList.end(); ++it) {
             fout << *it << endl;
         }
 
         string option = "e";
-		//the menu is in a while loop until the option selected is q
-		//the menu only reads the first character of the input as the option
-		while (option.at(0) != 'q') {
+        //the menu is in a while loop until the option selected is q
+        //the menu only reads the first character of the input as the option
+        while (option.at(0) != 'q') {
             cout << "MENU" << endl;
-			cout << "a - Display movies" << endl;
-			cout << "b - Add movies" << endl;
-			cout << "c - Edit release dates" << endl;
+            cout << "a - Display movies" << endl;
+            cout << "b - Add movies" << endl;
+            cout << "c - Edit release dates" << endl;
             cout << "d - Edit movie description" << endl;
             cout << "e - Start showing movies in the theatre" << endl;
             cout << "f - Number of movies before a date" << endl;
             cout << "s - Save" << endl;
-			cout << "q - Quit" << endl;
+            cout << "q - Quit" << endl;
             cout << endl;
-			cout << "Choose an option: " << endl;
+            cout << "Choose an option: " << endl;
             cin >> option;
 
-			//explain option here
-			if (option.at(0) == 'a') {
-				
-			}
             //explain option here
-			if (option.at(0) == 'b') {
-				
-			}
-			//explain option here
+            if (option.at(0) == 'a') {
+
+            }
+            //explain option here
+            if (option.at(0) == 'b') {
+
+            }
+            //explain option here
             if (option.at(0) == 'c') {
 
             }
@@ -91,11 +102,7 @@ int main() {
             if (option.at(0) == 's') {
 
             }
-		}//end while loop
-
-
-
-
+        }//end while loop
         fin.close();
         fout.close();
     }
