@@ -24,6 +24,8 @@ public:
 	Date get_release_date();
 	Date get_recieve_date();
 
+	bool operator <= (const Movie&);
+
 	friend std::ostream& operator<<(std::ostream& os, const Movie& movie);
 private:
 	Date release_date, recieve_date;
