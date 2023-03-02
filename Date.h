@@ -17,6 +17,8 @@ public:
     int get_month();
     int get_year();
 
+    bool operator <= (const Date&);
+
     friend ostream& operator << (ostream&, const Date&);
 private:
     int day;
