@@ -1,4 +1,5 @@
 #include "Movie.h"
+#include <iostream>
 
 Movie::Movie(string name, Date release_date, string description, Date recieve_date, bool status) {
 	this->release_date = release_date;
