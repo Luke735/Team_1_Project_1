@@ -37,11 +37,13 @@ Date Movie::get_release_date() { return release_date; }
 
 Date Movie::get_recieve_date() { return recieve_date; }
 
+bool Movie:: operator <= (const Movie& other) { return this->release_date <= other.release_date; }
+
 std::ostream& operator<<(std::ostream& os, const Movie& movie) {
-	os << "Name " << movie.name << std::endl;
-	os << "Receive date: " << movie.recieve_date << std::endl;
+	os << "Name: " << movie.name << std::endl;
 	os << "Release date: " << movie.release_date << std::endl;
+	os << "Receive date: " << movie.recieve_date << std::endl;
 	os << "Description: " << movie.description << std::endl;
-	os << "Status " << movie.status << std::endl;
+	os << "Status: " << movie.status << std::endl;
 	return os;
 }
