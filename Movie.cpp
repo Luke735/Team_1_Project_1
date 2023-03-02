@@ -35,3 +35,12 @@ bool Movie::get_status() { return status; }
 Date Movie::get_release_date() { return release_date; }
 
 Date Movie::get_recieve_date() { return recieve_date; }
+
+std::ostream& operator<<(std::ostream& os, const Movie& movie) {
+	os << "Name " << movie.name << std::endl;
+	os << "Receive date: " << movie.recieve_date << std::endl;
+	os << "Release date: " << movie.release_date << std::endl;
+	os << "Description: " << movie.description << std::endl;
+	os << "Status " << movie.status << std::endl;
+	return os;
+}
