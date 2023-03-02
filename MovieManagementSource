@@ -6,10 +6,10 @@
 #include <iterator>
 #include <vector>
 #include "Movie.h"
-
 using namespace std;
 
 int main() {
+
     ifstream fin("movie.txt");
 
     if (!fin.is_open()) {
@@ -18,12 +18,11 @@ int main() {
     else {
         ofstream fout;
         fout.open("results_1.txt");
-        list<Movie> showing, coming;
-       // vector<string> names, release_dates, receive_dates, descriptions, statuses;
+        list<Movie> showingList, comingList;
+        vector<string> names, release_dates, receive_dates, descriptions, statuses;
         string line;
         while (getline(fin, line)) {
-            string name = "", release_date = "", receive_date = "", description = "", status_string = "";
-            bool status;
+            string name = "", release_date = "", description = "", receive_date = "", status = "";
             int count = 0, breaker = 0;
             for (count; count < line.size(); count++) {
                 char current;
@@ -45,54 +44,37 @@ int main() {
                     receive_date.push_back(current);
                 }
                 if (breaker == 4 && current != ' ') {
-                    status_string.push_back(current);
+                    status.push_back(current);
                 }
             }
-            string reldays = "", relmonths = "", relyears = "", recdays = "", recmonths = "", recyears = "";
-            int relday, relmonth, relyear, recday, recmonth, recyear;
-            reldays.push_back(release_date.at(0));
-            reldays.push_back(release_date.at(1));
-            relmonths.push_back(release_date.at(3));
-            relmonths.push_back(release_date.at(4));
-            relyears.push_back(release_date.at(6));
-            relyears.push_back(release_date.at(7));
-            relyears.push_back(release_date.at(8));
-            relyears.push_back(release_date.at(9));
-            recdays.push_back(receive_date.at(0));
-            recdays.push_back(receive_date.at(1));
-            recmonths.push_back(receive_date.at(3));
-            recmonths.push_back(receive_date.at(4));
-            recyears.push_back(receive_date.at(6));
-            recyears.push_back(receive_date.at(7));
-            recyears.push_back(receive_date.at(8));
-            recyears.push_back(receive_date.at(9));
-            relday = stoi(reldays);
-            relmonth = stoi(relmonths);
-            relyear = stoi(relyears);
-            recday = stoi(recdays);
-            recmonth = stoi(recmonths);
-            recyear = stoi(recyears);
-            Date reldate, recdate;
-            reldate.set_day(relday);
-            reldate.set_month(relmonth);
-            reldate.set_year(relyear);
-            recdate.set_day(recday);
-            recdate.set_month(recmonth);
-            recdate.set_year(recyear);
-            
-            if (status_string == "released") { status = true; }
-            if (status_string == "received") { status = false; }
-            Movie movie(name, reldate, description, recdate, status);
-            if (status == true) { showing.push_back(movie); }
-            if (status == false) { coming.push_back(movie); }
+            names.push_back(name);
+            release_dates.push_back(release_date);
+            receive_dates.push_back(receive_date);
+            descriptions.push_back(description);
+            statuses.push_back(status);
 
+            Date newReceiveDate = Date();
+            newReceiveDate.set_day(stoi(receive_date.substr(0, 3)));
+            newReceiveDate.set_month(stoi(receive_date.substr(3, 6)));
+            newReceiveDate.set_year(stoi(receive_date.substr(6)));
+
+            Date newReleaseDate = Date();
+            newReleaseDate.set_day(stoi(release_date.substr(0, 3)));
+            newReleaseDate.set_month(stoi(release_date.substr(3, 6)));
+            newReleaseDate.set_year(stoi(release_date.substr(6)));
+
+            bool statuss = false;
+            if (status == "1") { statuss = true; }
+            Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
+            showingList.push_back(newMovie);
+            //cout << newMovie.get_name() << ", " << newMovie.get_release_date().get_day() << "/" << newMovie.get_release_date().get_month() << "/" << newMovie.get_release_date().get_year() <<     endl;;
+            cout << newMovie << endl;
         }
         list<Movie>::iterator it;
-        for (it = coming.begin(); it != coming.end(); ++it) {
+        for (it = showingList.begin(); it != showingList.end(); ++it) {
             fout << *it << endl;
         }
-        
-        /*
+
         string option = "e";
         //the menu is in a while loop until the option selected is q
         //the menu only reads the first character of the input as the option
@@ -139,8 +121,6 @@ int main() {
 
             }
         }//end while loop
-
-        */
         fin.close();
         fout.close();
     }
