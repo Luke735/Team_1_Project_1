@@ -23,7 +23,7 @@ public:
 	bool get_status();
 	Date get_release_date();
 	Date get_recieve_date();
-	
+
 	friend std::ostream& operator<<(std::ostream& os, const Movie& movie);
 private:
 	Date release_date, recieve_date;
