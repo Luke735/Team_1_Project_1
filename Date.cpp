@@ -17,3 +17,10 @@ int Date::get_day() { return this->day; }
 int Date::get_month() { return this->month; }
 
 int Date::get_year() { return this->year; }
+
+std::ostream& operator << (std::ostream& os, const Date& date) {
+    os << std::setw(2) << std::setfill('0') << date.day << "/";
+    os << std::setw(2) << std::setfill('0') << date.month << "/";
+    os << std::setw(4) << std::setfill('0') << date.year;
+    return os;
+}
