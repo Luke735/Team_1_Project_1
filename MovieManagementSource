@@ -67,12 +67,7 @@ int main() {
             if (status == "1") { statuss = true; }
             Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
             showingList.push_back(newMovie);
-            //cout << newMovie.get_name() << ", " << newMovie.get_release_date().get_day() << "/" << newMovie.get_release_date().get_month() << "/" << newMovie.get_release_date().get_year() <<     endl;;
-            cout << newMovie << endl;
-        }
-        list<Movie>::iterator it;
-        for (it = showingList.begin(); it != showingList.end(); ++it) {
-            fout << *it << endl;
+            cout << newMovie << endl; 
         }
 
         string option = "e";
@@ -94,11 +89,55 @@ int main() {
 
             //explain option here
             if (option.at(0) == 'a') {
-
+                list<Movie>::iterator it;
+                for (it = showingList.begin(); it != showingList.end(); ++it) {
+                    cout << *it << endl;
+                }
             }
             //explain option here
             if (option.at(0) == 'b') {
+                string newName, newDescription;
+                string newStatusStr;
+                bool newStatusBool;
+                Date newReceiveDate = Date();
+                Date newReleaseDate = Date();
+                string dateInput;
 
+                cout << "Enter the movie's name";
+                cin.ignore();
+                getline(cin, newName);
+              
+                cout << "Enter the movie's release date day" << endl;
+                cin >> dateInput;
+                newReleaseDate.set_day(stoi(dateInput.substr(0, 2)));
+                cout << "Enter the movie's release date month" << endl;
+                cin >> dateInput;
+                newReleaseDate.set_month(stoi(dateInput.substr(0, 2)));
+                cout << "Enter the movie's release date year" << endl;
+                cin >> dateInput;
+                newReleaseDate.set_year(stoi(dateInput.substr(0, 2)));
+
+                cout << "Enter the movie's description" << endl;
+                cin.ignore();
+                getline(cin, newDescription);
+
+                cout << "Enter the movie's receive date day" << endl;
+                cin >> dateInput;
+                newReceiveDate.set_day(stoi(dateInput.substr(0, 2)));
+                cout << "Enter the movie's receive date month" << endl;
+                cin >> dateInput;
+                newReceiveDate.set_month(stoi(dateInput.substr(0, 2)));
+                cout << "Enter the movie's receive date year" << endl;
+                cin >> dateInput;
+                newReceiveDate.set_year(stoi(dateInput.substr(0, 2)));
+
+                cout << "Is the movie showing (enter 1) or coming (enter 0)" << endl;
+                cin >> newStatusStr;
+                if (newStatusStr.at(0) == '1') { newStatusBool = true; }
+                else { newStatusBool = false; }
+                
+                Movie newMovie = Movie(newName, newReleaseDate, newDescription, newReceiveDate, newStatusBool);
+                showingList.push_back(newMovie);
             }
             //explain option here
             if (option.at(0) == 'c') {
