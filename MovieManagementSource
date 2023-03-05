@@ -63,19 +63,49 @@ int main() {
             newReleaseDate.set_month(stoi(release_date.substr(3, 6)));
             newReleaseDate.set_year(stoi(release_date.substr(6)));
 
-            bool statuss = false;
-            if (status == "1") { 
-                statuss = true;
-                Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
-                showingList.push_back(newMovie);
-                cout << "Showing Movie: " << newMovie << endl;
+            bool statuss;
+            if (status == "1") { statuss == true; }
+            else { statuss = false; }
+            Movie movie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
+
+        if(statuss == true){
+            list<Movie>::iterator it;
+            if (showingList.size() > 0) {
+                int count = 0;
+                for (it = showingList.begin(); it != showingList.end(); it++) {
+                    ++count;
+                    if (movie <= *it) {
+                        showingList.insert(it, movie);
+                        //continue;
+                    }
+                }
+                if (count == showingList.size() && showingList.size() != 0) {
+                    showingList.push_back(movie);
+                    //continue;
+                }
             }
-            else {
-                Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
-                comingList.push_back(newMovie);        
-                cout << "Coming Movie: " << newMovie << endl;
+            else { showingList.push_back(movie); }
+        }
+        if (statuss == false) {
+            list<Movie>::iterator it;
+            if (comingList.size() > 0) {
+                int count = 0;
+                for (it = comingList.begin(); it != comingList.end(); it++) {
+                    ++count;
+                    if (movie <= *it) {
+                        comingList.insert(it, movie);
+                        //continue;
+                    }
+                }
+                if (count == comingList.size() && comingList.size() != 0) {
+                    comingList.push_back(movie);
+                    //continue;
+                }
             }
-    
+            else { comingList.push_back(movie); }
+        }
+
+
         }
 
         string option = "e";
@@ -153,11 +183,11 @@ int main() {
                 cout << "Enter the name of the movie to edit the release date: ";
                 cin.ignore();
                 getline(cin, moviename);
-               
+
                 bool movieExist = false;
                 list<Movie>::iterator it;
                 Date editReleaseDate = Date();
-             
+
                 for (it = comingList.begin(); it != comingList.end(); ++it) {
                     if (it->get_name() == moviename) {
                         movieExist = true; // Checking movie exists or not. If it exists, returns true and update. Otherwise, print out "movie does not exist".
@@ -179,9 +209,9 @@ int main() {
                         bool status_ = 0;
 
 
-                        it->set_release_date(editReleaseDate.get_day(), editReleaseDate.get_month(), editReleaseDate.get_year());                       
+                        it->set_release_date(editReleaseDate.get_day(), editReleaseDate.get_month(), editReleaseDate.get_year());
                         cout << "Updated the release date completely." << endl << endl;
-                        
+
                         Movie editMovie = Movie(moviename, editReleaseDate, description, receive_date, status_);
                         //comingList.push_back(editMovie);
                         cout << editMovie << endl; // Checking whether I put right information.
@@ -221,7 +251,7 @@ int main() {
 
                         cout << "Updated the description completely." << endl << endl;
 
-                        Movie editDesMovie = Movie(names, release_date, newDescription, receive_date, status_);                      
+                        Movie editDesMovie = Movie(names, release_date, newDescription, receive_date, status_);
                         cout << editDesMovie << endl; // Checking.
                         break;
                     }
