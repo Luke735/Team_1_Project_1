@@ -64,10 +64,18 @@ int main() {
             newReleaseDate.set_year(stoi(release_date.substr(6)));
 
             bool statuss = false;
-            if (status == "1") { statuss = true; }
-            Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
-            showingList.push_back(newMovie);
-            cout << newMovie << endl; 
+            if (status == "1") { 
+                statuss = true;
+                Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
+                showingList.push_back(newMovie);
+                cout << "Showing Movie: " << newMovie << endl;
+            }
+            else {
+                Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
+                comingList.push_back(newMovie);        
+                cout << "Coming Movie: " << newMovie << endl;
+            }
+    
         }
 
         string option = "e";
@@ -106,7 +114,7 @@ int main() {
                 cout << "Enter the movie's name";
                 cin.ignore();
                 getline(cin, newName);
-              
+
                 cout << "Enter the movie's release date day" << endl;
                 cin >> dateInput;
                 newReleaseDate.set_day(stoi(dateInput.substr(0, 2)));
@@ -135,17 +143,95 @@ int main() {
                 cin >> newStatusStr;
                 if (newStatusStr.at(0) == '1') { newStatusBool = true; }
                 else { newStatusBool = false; }
-                
+
                 Movie newMovie = Movie(newName, newReleaseDate, newDescription, newReceiveDate, newStatusBool);
                 showingList.push_back(newMovie);
             }
             //explain option here
             if (option.at(0) == 'c') {
+                string moviename;
+                cout << "Enter the name of the movie to edit the release date: ";
+                cin.ignore();
+                getline(cin, moviename);
+
+                // if moviename exists in the movie list, it can edit the date. Otherwise, it can't edit because there's not the movie.
+                bool movieExist = false;
+                list<Movie>::iterator it;
+                Date editReleaseDate = Date();
+
+                // Edit a movie in coming list(c. release date or d. description.
+                // Firstly, it needs to fine the movie with the specific name so that we can find the correct movie and update successfully.
+                for (it = comingList.begin(); it != comingList.end(); ++it) {
+                    if (it->get_name() == moviename) {
+                        movieExist = true; // Checking movie exists or not. If it exists, returns true and update. Otherwise, print out "movie does not exist".
+
+                        string newDateInput;
+                        cout << "Enter the new release date's day: " << endl;
+                        cin >> newDateInput;
+                        editReleaseDate.set_day(stoi(newDateInput.substr(0, 2)));
+                        cout << "Enter the new release date's month: " << endl;
+                        cin >> newDateInput;
+                        editReleaseDate.set_month(stoi(newDateInput.substr(0, 2)));
+                        cout << "Enter the new release date's year" << endl;
+                        cin >> newDateInput;
+                        editReleaseDate.set_year(stoi(newDateInput.substr(0, 4)));
+
+                        string names = moviename;
+                        string description = it->get_description();
+                        Date receive_date = it->get_recieve_date();
+                        bool status_ = 0;
+
+
+                        it->set_release_date(editReleaseDate.get_day(), editReleaseDate.get_month(), editReleaseDate.get_year());                       
+                        cout << "Updated the release date completely." << endl << endl;
+                        
+                        Movie editMovie = Movie(moviename, editReleaseDate, description, receive_date, status_);
+                        //comingList.push_back(editMovie);
+                        cout << editMovie << endl; // Checking whether I put right information.
+                        break;
+                    }
+                }
+                if (!movieExist) {
+                    cout << "Movie does not exist." << endl;
+                }
 
             }
             //explain option here
             if (option.at(0) == 'd') {
+                string moviename;
+                cout << "Enter the name of the movie to edit the description: ";
+                cin.ignore();
+                getline(cin, moviename);
 
+                bool movieExist = false;
+                string newDescription;
+                list<Movie>::iterator it;
+                Date editReleaseDate = Date();
+
+                for (it = comingList.begin(); it != comingList.end(); ++it) {
+                    if (it->get_name() == moviename) {
+                        movieExist = true; // true
+                        cout << "Enter the new desription for the movie: ";
+                        cin.ignore();
+                        getline(cin, newDescription);
+
+                        it->set_description(newDescription);
+
+                        string names = it->get_name();
+                        Date release_date = it->get_release_date();
+                        Date receive_date = it->get_recieve_date();
+                        bool status_ = 0;
+
+                        cout << "Updated the description completely." << endl << endl;
+
+                        Movie editDesMovie = Movie(names, release_date, newDescription, receive_date, status_);                      
+                        cout << editDesMovie << endl; // Checking.
+                        break;
+                    }
+                }
+                if (!movieExist) {
+                    cout << "Movie does not exist." << endl;
+                }
             }
             //explain option here
             if (option.at(0) == 'e') {
