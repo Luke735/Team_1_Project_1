@@ -179,8 +179,6 @@ int main() {
                 
                 Movie newMovie = Movie(newName, newReleaseDate, newDescription, newReceiveDate, newStatusBool);
                 comingList.push_back(newMovie);
-
-
             }
             //explain option here
             if (option.at(0) == 'c') {
@@ -266,7 +264,29 @@ int main() {
             }
             //starts showing all movies with the specified release date
             if (option.at(0) == 'e') {
+                Date newReleaseDate = Date();
+                string newDateInput;
+                cout << "Enter the day of the release date of the movies to start showing: " << endl;
+                cin >> newDateInput;
+                newReleaseDate.set_day(stoi(newDateInput.substr(0, 2)));
 
+                cout << "Enter the month of the release date of the movies to start showing: " << endl;
+                cin >> newDateInput;
+                newReleaseDate.set_month(stoi(newDateInput.substr(0, 2)));
+
+                cout << "Enter the year of the release date of the movies to start showing: " << endl;
+                cin >> newDateInput;
+                newReleaseDate.set_year(stoi(newDateInput.substr(0, 4)));
+
+                list<Movie>::iterator it;
+                for (it = comingList.begin(); it != comingList.end(); it++) {
+                    if (it->get_release_date() == newReleaseDate) {
+                        cout << "Moved " << it->get_name() << " to showing list" << endl;
+                        showingList.push_back(*it);
+                        it = comingList.erase(it);
+                    }
+                }
+                cout << "Complete!" << endl;
             }
             //explain option here
             if (option.at(0) == 'f') {
