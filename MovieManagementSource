@@ -18,7 +18,7 @@ int main() {
     else {
         ofstream fout;
         fout.open("results_1.txt");
-        list<Movie> showingList, comingList;
+        list<Movie> comingList, showingList;
         vector<string> names, release_dates, receive_dates, descriptions, statuses;
         string line;
         while (getline(fin, line)) {
@@ -63,49 +63,46 @@ int main() {
             newReleaseDate.set_month(stoi(release_date.substr(3, 6)));
             newReleaseDate.set_year(stoi(release_date.substr(6)));
 
-            bool statuss;
-            if (status == "1") { statuss == true; }
-            else { statuss = false; }
-            Movie movie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
+            bool statuss = false;
+            if (status == "1") { statuss = true; }
+            Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
 
-        if(statuss == true){
-            list<Movie>::iterator it;
-            if (showingList.size() > 0) {
-                int count = 0;
-                for (it = showingList.begin(); it != showingList.end(); it++) {
-                    ++count;
-                    if (movie <= *it) {
-                        showingList.insert(it, movie);
+            if (statuss == true) {
+                list<Movie>::iterator it;
+                if (showingList.size() > 0) {
+                    int count = 0;
+                    for (it = showingList.begin(); it != showingList.end(); it++) {
+                        ++count;
+                        if (newMovie <= *it) {
+                            showingList.insert(it, newMovie);
+                            //continue;
+                        }
+                    }
+                    if (count == showingList.size() && showingList.size() != 0) {
+                        showingList.push_back(newMovie);
                         //continue;
                     }
                 }
-                if (count == showingList.size() && showingList.size() != 0) {
-                    showingList.push_back(movie);
-                    //continue;
-                }
+                else { showingList.push_back(newMovie); }
             }
-            else { showingList.push_back(movie); }
-        }
-        if (statuss == false) {
-            list<Movie>::iterator it;
-            if (comingList.size() > 0) {
-                int count = 0;
-                for (it = comingList.begin(); it != comingList.end(); it++) {
-                    ++count;
-                    if (movie <= *it) {
-                        comingList.insert(it, movie);
+            if (statuss == false) {
+                list<Movie>::iterator it;
+                if (comingList.size() > 0) {
+                    int count = 0;
+                    for (it = comingList.begin(); it != comingList.end(); it++) {
+                        ++count;
+                        if (newMovie <= *it) {
+                            comingList.insert(it, newMovie);
+                            //continue;
+                        }
+                    }
+                    if (count == comingList.size() && comingList.size() != 0) {
+                        comingList.push_back(newMovie);
                         //continue;
                     }
                 }
-                if (count == comingList.size() && comingList.size() != 0) {
-                    comingList.push_back(movie);
-                    //continue;
-                }
+                else { comingList.push_back(newMovie); }
             }
-            else { comingList.push_back(movie); }
-        }
-
-
         }
 
         string option = "e";
@@ -127,9 +124,15 @@ int main() {
 
             //explain option here
             if (option.at(0) == 'a') {
+                cout << "Coming list:" << endl;
                 list<Movie>::iterator it;
-                for (it = showingList.begin(); it != showingList.end(); ++it) {
+                for (it = comingList.begin(); it != comingList.end(); ++it) {
                     cout << *it << endl;
+                }
+                cout << endl << "Showing list:" << endl;
+                list<Movie>::iterator it2;
+                for (it2 = showingList.begin(); it2 != showingList.end(); ++it2) {
+                    cout << *it2 << endl;
                 }
             }
             //explain option here
@@ -144,7 +147,7 @@ int main() {
                 cout << "Enter the movie's name";
                 cin.ignore();
                 getline(cin, newName);
-
+                
                 cout << "Enter the movie's release date day" << endl;
                 cin >> dateInput;
                 newReleaseDate.set_day(stoi(dateInput.substr(0, 2)));
@@ -173,9 +176,11 @@ int main() {
                 cin >> newStatusStr;
                 if (newStatusStr.at(0) == '1') { newStatusBool = true; }
                 else { newStatusBool = false; }
-
+                
                 Movie newMovie = Movie(newName, newReleaseDate, newDescription, newReceiveDate, newStatusBool);
-                showingList.push_back(newMovie);
+                comingList.push_back(newMovie);
+
+
             }
             //explain option here
             if (option.at(0) == 'c') {
@@ -238,8 +243,7 @@ int main() {
                 for (it = comingList.begin(); it != comingList.end(); ++it) {
                     if (it->get_name() == moviename) {
                         movieExist = true; // true
-                        cout << "Enter the new desription for the movie: ";
-                        cin.ignore();
+                        cout << "Enter the new description for the movie: ";
                         getline(cin, newDescription);
 
                         it->set_description(newDescription);
@@ -260,7 +264,7 @@ int main() {
                     cout << "Movie does not exist." << endl;
                 }
             }
-            //explain option here
+            //starts showing all movies with the specified release date
             if (option.at(0) == 'e') {
 
             }
