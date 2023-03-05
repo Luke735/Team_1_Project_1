@@ -270,7 +270,35 @@ int main() {
             }
             //explain option here
             if (option.at(0) == 'f') {
+                string day, month, year;
+                Date ReleaseDate = Date();
 
+                cout << "Enter the movie's release date day" << endl;
+                cin >> day;
+                ReleaseDate.set_day(stoi(day));
+                cout << "Enter the movie's release date month" << endl;
+                cin >> month;
+                ReleaseDate.set_month(stoi(month));
+                cout << "Enter the movie's release date year" << endl;
+                cin >> year;
+                ReleaseDate.set_year(stoi(year));
+
+                if (ReleaseDate.isValid()) {
+
+                    Date rec = Date();
+                    Movie movie("", ReleaseDate, "", rec, false); //Make a dummy movie to compare release date
+
+                    int countt = 0;
+                    list<Movie>::iterator it;
+                    for (it = comingList.begin(); it != comingList.end(); it++) {
+                        if (comingList.size() == 0) { countt = 0; }
+                        else if (movie <= *it) {
+                            countt++;
+                        }
+                    }
+                    cout << "The number of movies before the specified release date in the coming list is: " << countt << endl;
+                }
+                else { cout << "Error, invalid date" << endl; }
             }
             //explain option here
             if (option.at(0) == 's') {
