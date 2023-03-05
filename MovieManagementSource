@@ -20,6 +20,7 @@ int main() {
         fout.open("results_1.txt");
         //Declare our two lists for coming and showing
         list<Movie> comingList, showingList;
+        //these strings are filled with each variable read from the input file
         vector<string> names, release_dates, receive_dates, descriptions, statuses;
         string line;
         while (getline(fin, line)) { //Gets each line from the input file
@@ -30,12 +31,12 @@ int main() {
             for (count; count < line.size(); count++) {
                 char current;
                 current = line.at(count);
-                //Commas act as barriers between types, so increment breaker when comma is detected
+                //the input file is comma separated, so when a comma is encountered, increment breaker, which causes the 
+                //following reads to be stored into the next variable
                 if (current == ',') {
                     ++breaker;
                     continue;
                 }
-                //Depending on breakers size, we will know what string to push back the characters
                 if (breaker == 0) {
                     name.push_back(current);
                 }
@@ -58,6 +59,7 @@ int main() {
             descriptions.push_back(description);
             statuses.push_back(status);
 
+            //new Date objects must be created from the file input, the Date objects have day, month, and year variables
             Date newReceiveDate = Date();
             newReceiveDate.set_day(stoi(receive_date.substr(0, 3)));
             newReceiveDate.set_month(stoi(receive_date.substr(3, 6)));
@@ -68,8 +70,10 @@ int main() {
             newReleaseDate.set_month(stoi(release_date.substr(3, 6)));
             newReleaseDate.set_year(stoi(release_date.substr(6)));
 
+            //the input file contains 1 for showing and 0 for coming, so translate that into boolean values
             bool statuss = false;
             if (status == "1") { statuss = true; }
+            //creates a the new movie object using all the variables read from input
             Movie newMovie = Movie(name, newReleaseDate, description, newReceiveDate, statuss);
 
             //If the statuss is true, we can push back the movie into the showing list
@@ -81,10 +85,12 @@ int main() {
                         ++count;
                         if (newMovie <= *it) { //If the new movies release date is less than the movie at iterators position
                             showingList.insert(it, newMovie); //Then we can insert the movie at iterators position
+                            //continue;
                         }
                     }
                     if (count == showingList.size() && showingList.size() != 0) {
                         showingList.push_back(newMovie); //If we reach the end and no movie has a greater release date, then we push to back
+                        //continue;
                     }
                 }
                 else { showingList.push_back(newMovie); } //If no movies in list, push back
@@ -98,10 +104,12 @@ int main() {
                         ++count;
                         if (newMovie <= *it) { //If the new movies release date is less than the movie at iterators position
                             comingList.insert(it, newMovie); //Then we can insert the movie at iterators position
+                            //continue;
                         }
                     }
                     if (count == comingList.size() && comingList.size() != 0) {
                         comingList.push_back(newMovie); //If we reach the end and no movie has a greater release date, then we push to back
+                        //continue;
                     }
                 }
                 else { comingList.push_back(newMovie); } //If no movies in list, push back
@@ -125,11 +133,12 @@ int main() {
             cout << "Choose an option: " << endl;
             cin >> option;
 
-            //explain option here
+            //Display Movies: uses iterators to output comingList and showingList
             if (option.at(0) == 'a') {
                 cout << "Coming list:" << endl;
                 list<Movie>::iterator it;
                 for (it = comingList.begin(); it != comingList.end(); ++it) {
+
                     cout << *it << endl;
                 }
                 cout << endl << "Showing list:" << endl;
@@ -138,7 +147,9 @@ int main() {
                     cout << *it2 << endl;
                 }
             }
-            //explain option here
+            //Add movie: adds a movie with by prompting the user for each property of a Movie object. Movie is added to the coming list.
+            //Also, each time a << is used to read user input, a newline character is left in the input buffer. When getline() is called
+            //after this, it only takes the newline character and appears to have done nothing. cin.ignore() must be used (confusing error) (thanks c++)
             if (option.at(0) == 'b') {
                 string newName, newDescription;
                 string newStatusStr;
@@ -150,7 +161,7 @@ int main() {
                 cout << "Enter the movie's name";
                 cin.ignore();
                 getline(cin, newName);
-
+                
                 cout << "Enter the movie's release date day" << endl;
                 cin >> dateInput;
                 newReleaseDate.set_day(stoi(dateInput.substr(0, 2)));
@@ -179,11 +190,11 @@ int main() {
                 cin >> newStatusStr;
                 if (newStatusStr.at(0) == '1') { newStatusBool = true; }
                 else { newStatusBool = false; }
-
+                
                 Movie newMovie = Movie(newName, newReleaseDate, newDescription, newReceiveDate, newStatusBool);
                 comingList.push_back(newMovie);
             }
-            //explain option here
+            // Find the movie and update movie's the releases date from cominglist.
             if (option.at(0) == 'c') {
                 string moviename;
                 cout << "Enter the name of the movie to edit the release date: ";
@@ -229,7 +240,7 @@ int main() {
                 }
 
             }
-            //explain option here
+            // Find the movie and update movie's the description from cominglist.
             if (option.at(0) == 'd') {
                 string moviename;
                 cout << "Enter the name of the movie to edit the description: ";
@@ -265,7 +276,9 @@ int main() {
                     cout << "Movie does not exist." << endl;
                 }
             }
-            //starts showing all movies with the specified release date
+            //Start showing movies in the theatre: starts showing all movies with the specified release date, creates a new Date object and
+            //sets it's day, month, and year variables with user input, then uses Date()'s == operator to compare it with each iterator position.
+            //if they match, add the movie to the showingList and remove it from the coming list.
             if (option.at(0) == 'e') {
                 Date newReleaseDate = Date();
                 string newDateInput;
@@ -291,49 +304,46 @@ int main() {
                 }
                 cout << "Complete!" << endl;
             }
-            //Outuputs all movies in coming list before a specified date
+            //Outputs all movies in coming list before a specified date, 
             if (option.at(0) == 'f') {
 
                 //Declare variables needed to count movies before a certain date
                 string day, month, year;
                 Date ReleaseDate = Date();
 
-                //Get user to input the date that the
-                cout << "Enter the release date day" << endl;
+                cout << "Enter the movie's release date day" << endl;
                 cin >> day;
                 ReleaseDate.set_day(stoi(day));
-                cout << "Enter the release date month" << endl;
+                cout << "Enter the movie's release date month" << endl;
                 cin >> month;
                 ReleaseDate.set_month(stoi(month));
-                cout << "Enter the release date year" << endl;
+                cout << "Enter the movie's release date year" << endl;
                 cin >> year;
                 ReleaseDate.set_year(stoi(year));
 
                 if (ReleaseDate.isValid()) { //Check if the date entered is valid
 
-                    Date rec = Date(); //dummy date for received date
+                    Date rec = Date();
                     Movie movie("", ReleaseDate, "", rec, false); //Make a dummy movie to compare release date
 
-                    int countt = 0; //initialize count to 0
+                    int countt = 0;
                     list<Movie>::iterator it;
                     for (it = comingList.begin(); it != comingList.end(); it++) { //Iterate over the coming list
                         if (comingList.size() == 0) { countt = 0; }
-                        else if (*it <= movie) {
-                            countt++;  //For every movie that has a release date less than the date entered, increment count
+                        else if (movie <= *it) {
+                            countt++; //For every movie that has a release date less than the date entered, increment count
                         }
                     }
                     cout << "The number of movies before the specified release date in the coming list is: " << countt << endl; //Output the count
                 }
                 else { cout << "Error, invalid date" << endl; } //If invalid date, display error message
             }
-            //Outputs both coming and showing movies to the output file
+            ////Outputs both coming and showing movies to the output file
             if (option.at(0) == 's') {
                 list<Movie>::iterator it;
-                //Output the movies in the showing list
                 for (it = showingList.begin(); it != showingList.end(); ++it) {
                     fout << *it << endl;
                 }
-                //Output the movies in the coming list
                 for (it = comingList.begin(); it != comingList.end(); ++it) {
                     fout << *it << endl;
                 }
