@@ -34,6 +34,11 @@ bool Date:: operator <= (const Date& other) {
     }
 }
 
+bool Date:: operator == (const Date& other) {
+    if ((this->get_day() == other.day) && (this->get_month() == other.month) && (this->get_year() == other.year)) { return true; }
+    else { return false; }
+}
+
 std::ostream& operator << (std::ostream& os, const Date& date) {
     os << std::setw(2) << std::setfill('0') << date.day << "/";
     os << std::setw(2) << std::setfill('0') << date.month << "/";
