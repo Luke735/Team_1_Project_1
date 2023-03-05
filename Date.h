@@ -18,6 +18,8 @@ public:
     int get_year();
 
     bool operator <= (const Date&);
+    
+    bool isValid() const;
 
     friend ostream& operator << (ostream&, const Date&);
 private:
