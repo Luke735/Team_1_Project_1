@@ -302,7 +302,13 @@ int main() {
             }
             //explain option here
             if (option.at(0) == 's') {
-
+                list<Movie>::iterator it;
+                for (it = showingList.begin(); it != showingList.end(); ++it) {
+                    fout << *it << endl;
+                }
+                for (it = comingList.begin(); it != comingList.end(); ++it) {
+                    fout << *it << endl;
+                }
             }
         }//end while loop
         fin.close();
