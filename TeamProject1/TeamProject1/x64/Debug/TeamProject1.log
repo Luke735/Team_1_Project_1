@@ -1,0 +1,6 @@
+﻿  Date.cpp
+  Movie.cpp
+  MovieManagementSource.cpp
+  Generating Code...
+C:\Users\smash\source\repos\TeamProject1\TeamProject1\Date.cpp(35): warning C4715: 'Date::operator<=': not all control paths return a value
+  TeamProject1.vcxproj -> C:\Users\smash\source\repos\TeamProject1\x64\Debug\TeamProject1.exe
