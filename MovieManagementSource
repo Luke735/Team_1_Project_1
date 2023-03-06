@@ -85,7 +85,7 @@ int main() {
                         ++count;
                         if (newMovie <= *it) { //If the new movies release date is less than the movie at iterators position
                             showingList.insert(it, newMovie); //Then we can insert the movie at iterators position
-                            //continue;
+                            break;
                         }
                     }
                     if (count == showingList.size() && showingList.size() != 0) {
@@ -95,7 +95,7 @@ int main() {
                 }
                 else { showingList.push_back(newMovie); } //If no movies in list, push back
             }
-            //If the statuss is false, we can push back the movie into the showing list
+            //If the statuss is false, we can push back the movie into the coming list
             if (statuss == false) {
                 list<Movie>::iterator it;
                 if (comingList.size() > 0) {
@@ -104,7 +104,7 @@ int main() {
                         ++count;
                         if (newMovie <= *it) { //If the new movies release date is less than the movie at iterators position
                             comingList.insert(it, newMovie); //Then we can insert the movie at iterators position
-                            //continue;
+                            break;
                         }
                     }
                     if (count == comingList.size() && comingList.size() != 0) {
@@ -214,7 +214,22 @@ int main() {
                 }
                 
                 Movie newMovie = Movie(newName, newReleaseDate, newDescription, newReceiveDate, false);
-                comingList.push_back(newMovie);
+                list<Movie>::iterator it;
+                if (comingList.size() > 0) {
+                    int count = 0;
+                    for (it = comingList.begin(); it != comingList.end(); it++) {
+                        ++count;
+                        if (newMovie <= *it) { //If the new movies release date is less than the movie at iterators position
+                            comingList.insert(it, newMovie); //Then we can insert the movie at iterators position
+                            break;
+                        }
+                    }
+                    if (count == comingList.size() && comingList.size() != 0) {
+                        comingList.push_back(newMovie); //If we reach the end and no movie has a greater release date, then we push to back
+                        //continue;
+                    }
+                }
+                else { comingList.push_back(newMovie); } //If no movies in list, push back
             }
             // Find the movie and update movie's the releases date from cominglist.
             if (option.at(0) == 'c') {
